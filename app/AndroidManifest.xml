@@ -1,0 +1,46 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature android:name="android.software.leanback" android:required="false" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE" />
+    <application android:label="应用冻结管理" android:icon="@drawable/ic_app_control"
+        android:banner="@drawable/banner_app_control"
+        android:theme="@android:style/Theme.Material.NoActionBar"
+        android:allowBackup="false" android:supportsRtl="true">
+        <receiver android:name=".RestoreStatesReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+        <activity android:name=".MainActivity" android:exported="true"
+            android:screenOrientation="landscape" />
+        <activity-alias android:name=".NormalLauncher" android:exported="true"
+            android:enabled="true" android:targetActivity=".MainActivity"
+            android:icon="@drawable/ic_app_control" android:banner="@drawable/banner_app_control">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:name=".FrozenLauncher" android:exported="true"
+            android:enabled="false" android:targetActivity=".MainActivity"
+            android:icon="@drawable/ic_app_control_frozen" android:banner="@drawable/banner_app_control_frozen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <receiver android:name=".IconStateReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>
